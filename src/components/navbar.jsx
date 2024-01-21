@@ -73,16 +73,7 @@ export function Pricing(){
     </HoverCard>
   )
 }
-export function Documentation(){
-  return(
-    <HoverCard>
-      <HoverCardTrigger>Documentation</HoverCardTrigger>
-      <HoverCardContent>
-        The React Framework – created and maintained by @vercel.
-      </HoverCardContent>
-    </HoverCard>
-  )
-}
+
 export default function Navbar() {
   const {theme} = useTheme()
   return (
@@ -95,10 +86,12 @@ export default function Navbar() {
             <li className=" cursor-pointer  hover:bg-slate-900 hover:text-blue-400 transition-colors duration-1000 px-4 py-2 rounded ">
               <Link href={'/about'}>About</Link>
               </li>
-            <li className=" cursor-pointer"><Pricing /></li>
+            <li className=" cursor-pointer  hover:bg-slate-900 hover:text-blue-400 transition-colors duration-1000 px-4 py-2 rounded ">
+              <Link href={'/pricing'}> Pricing</Link>
+              </li>
           </ul>
         </div>
-        <div className='flex flex-row justify-between items-center gap-2'>
+        <div id='notification' className='flex flex-row justify-between items-center gap-2'>
           <Popover>
             <PopoverTrigger><div className='inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground' ><BellIcon className="h-5 w-5"/></div></PopoverTrigger>
             <PopoverContent  className="w-[40vw] flex flex-col gap-4">
@@ -120,7 +113,13 @@ export default function Navbar() {
           </Popover>
           <ModeToggle />   
           {
-            theme === 'dark' ? <UserButton appearance={{baseTheme: dark}} signInUrl='/sign-in' afterSignOutUrl='/sign-in' /> : <UserButton signInUrl='/sign-in' afterSignOutUrl='/sign-in' />
+            theme === 'dark' ? <UserButton appearance={{baseTheme: dark}} 
+            signInUrl='/sign-in' 
+            afterSignOutUrl='/sign-in'
+            userProfileMode= 'navigation'
+            userProfileUrl='/app/user-profile'
+             /> 
+            : <UserButton signInUrl='/sign-in' afterSignOutUrl='/sign-in' />
           }
       </div>
 

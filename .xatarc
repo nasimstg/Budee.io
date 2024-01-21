@@ -1,7 +1,3 @@
 {
-  "databaseURL": "https://Mohammed-Nasim-s-workspace-g7p9di.us-east-1.xata.sh/db/budee",
-  "codegen": {
-    "output": "src/xata.js",
-    "moduleType": "esm"
-  }
+  "databaseURL": "https://Mohammed-Nasim-s-workspace-g7p9di.us-east-1.xata.sh/db/budee"
 }

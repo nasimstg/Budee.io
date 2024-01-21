@@ -2,19 +2,22 @@
 import { Inter } from 'next/font/google'
 import './global.css'
 import { ClerkProvider } from '@clerk/nextjs'
-import Navbar from '@/components/navbar'
 import { ThemeProvider } from '@/components/theme-provider'
 import { useTheme } from 'next-themes'
-import { dark } from '@clerk/themes'
+import { useEffect } from 'react'
 
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function RootLayout({ children }) {
-  const {theme} = useTheme()
-  console.log(theme)
+  const { theme, setTheme } = useTheme()
+  useEffect(() => {
+    if (theme) {
+      console.log(theme)
+    }
+  }, [theme])
   return (
-    <ClerkProvider appearance={{baseTheme: dark}}>
+    <ClerkProvider>
       <html lang="en">
         <body className={inter.className}>
         <ThemeProvider
@@ -23,7 +26,10 @@ export default function RootLayout({ children }) {
             enableSystem
             disableTransitionOnChange
           >
-        <Navbar />
+            <div className="bg-gray-100 dark:bg-gray-900">
+              <nav className="bg-white dark:bg-gray-800 shadow">
+              </nav>
+            </div>
           {children}
         </ThemeProvider>
         </body>

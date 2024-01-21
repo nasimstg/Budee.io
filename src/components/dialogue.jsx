@@ -26,7 +26,9 @@ export default function Dialogue({title, data}) {
         </DialogHeader>
             {data.comp}
         <DialogFooter>
-        <Button type="submit">{data.btnTxt}</Button>
+            {
+                data?.btnTxt && <Button type="submit">{data.btnTxt}</Button>
+            }
         </DialogFooter>
     </DialogContent>
     </Dialog>
