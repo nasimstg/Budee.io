@@ -20,7 +20,9 @@ import { Card } from './ui/card'
 import { ChevronRightIcon , ChevronDownIcon, BellIcon, QuestionMarkIcon, ExclamationTriangleIcon } from '@radix-ui/react-icons'
 import { dark } from '@clerk/themes'
 
+import { ArrowLeftIcon, ArrowRightToLineIcon } from 'lucide-react'
 import { useTheme } from 'next-themes'
+import { useRouter, usePathname } from 'next/navigation'
 
 
 export function Pricing(){
@@ -76,20 +78,36 @@ export function Pricing(){
 
 export default function Navbar() {
   const {theme} = useTheme()
+  const router = useRouter()
+  const p = usePathname()
+  let path = p.split('/')
+  console.log(path)
   return (
     <section className='flex flex-row justify-between items-center mx-10 my-4'>
         <div>
-          <ul className='flex flex-row gap-10'>
-            <li className=" cursor-pointer  hover:bg-slate-900 hover:text-blue-400 transition-colors duration-1000 px-4 py-2 rounded">
-              <Link href={'/'}>Budee.io</Link>
-            </li>
-            <li className=" cursor-pointer  hover:bg-slate-900 hover:text-blue-400 transition-colors duration-1000 px-4 py-2 rounded ">
-              <Link href={'/about'}>About</Link>
-              </li>
-            <li className=" cursor-pointer  hover:bg-slate-900 hover:text-blue-400 transition-colors duration-1000 px-4 py-2 rounded ">
-              <Link href={'/pricing'}> Pricing</Link>
-              </li>
-          </ul>
+          <div className='flex flex-row gap-4 items-center'>
+            <div className=''>
+                <Button variant="outline" onClick={() => router.back()} className='flex items-center'>
+                  <ArrowLeftIcon />
+                </Button>
+            </div>
+            {
+              path.map((item, index) => (
+              <>
+              {
+                item === '' ? <p>budee.io</p> : <>
+                <ArrowRightToLineIcon />
+                <div key={index} className=''>
+                  <Button variant="outline" className='flex items-center'>
+                    {item === 'app' ? <Link href={'/app'}>{item}</Link>:<Link href={'/app/'+item}>{item}</Link>}
+                  </Button>
+                </div>
+                </>
+                }
+              </>
+              ))
+            }
+          </div>
         </div>
         <div id='notification' className='flex flex-row justify-between items-center gap-2'>
           <Popover>

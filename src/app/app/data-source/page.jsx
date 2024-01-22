@@ -8,26 +8,43 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { DataTable } from "@/components/table"
 import {data} from "@/data/sidebarData"
+import { useRouter } from 'next/router'
 
 const accountType = [
   {
     img:'/images/adwords.png',
-    action:'/new/google'
+    action:'/app/new/google',
   },
   {
     img:'/images/meta.png',
-    action:'/new/meta'
-  }
+    action:'/app/new/meta'
+  },
+  {
+    img:'/images/bing.png',
+    action:'/app/new/bing',
+  },
+  {
+    img:'/images/twitter.png',
+    action:'/app/new/twitter',
+  },
+  {
+    img:'/images/linkedin.png',
+    action:'/app/new/linkedin',
+  },
+  {
+    img:'/images/tik-tok.png',
+    action:'/app/new/tiktok',
+  },
 ]
 
 
 export function Accounts (){
   return (
     <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-2 items-center gap-4">
+          <div className="grid grid-cols-3 items-center gap-4">
             {
               accountType.map((item, index) =>(
-                <Button key={index} variant="outline" className='flex justify-center items-center w-40 h-40' asChild
+                <Button  key={index} variant="outline" className='flex justify-center items-center w-28 h-28' asChild
                 >
                   <Link href={item.action}>
                   <Image src={item.img} width={64} height={64} alt={item}></Image></Link>
