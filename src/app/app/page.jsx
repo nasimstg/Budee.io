@@ -5,6 +5,7 @@ import TopMenu from '@/components/topmenu'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import {data} from "@/data/sidebarData"
+import { useState } from 'react'
 
 const CreateClient = () =>{
   return (
@@ -63,7 +64,6 @@ export const menu_data = [
 
 export default function Home() {
 
-
   return (
     <section className='mx-10 my-4'>
       <div className='flex my-4'>
@@ -78,3 +78,4 @@ export default function Home() {
     </section>
   )
 }
+

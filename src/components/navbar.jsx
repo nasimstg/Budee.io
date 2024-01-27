@@ -1,5 +1,5 @@
-import React from 'react'
-import { UserButton } from '@clerk/nextjs'
+import React, { useEffect } from 'react'
+import { UserButton, useUser } from '@clerk/nextjs'
 import { ModeToggle } from './moodToggle'
 import Link from 'next/link'
 import {
@@ -23,6 +23,8 @@ import { dark } from '@clerk/themes'
 import { ArrowLeftIcon, ArrowRightToLineIcon } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import { useRouter, usePathname } from 'next/navigation'
+import { useState } from 'react'
+import { initUser } from '@/lib/db/user'
 
 
 export function Pricing(){
@@ -81,7 +83,13 @@ export default function Navbar() {
   const router = useRouter()
   const p = usePathname()
   let path = p.split('/')
-  console.log(path)
+  const {user} = useUser()
+
+  useEffect(() => {
+    if(user){
+      initUser(user);
+    }
+  }, [user])
   return (
     <section className='flex flex-row justify-between items-center mx-10 my-4'>
         <div>
@@ -94,16 +102,16 @@ export default function Navbar() {
             {
               path.map((item, index) => (
               <>
-              {
-                item === '' ? <p>budee.io</p> : <>
-                <ArrowRightToLineIcon />
-                <div key={index} className=''>
-                  <Button variant="outline" className='flex items-center'>
-                    {item === 'app' ? <Link href={'/app'}>{item}</Link>:<Link href={'/app/'+item}>{item}</Link>}
-                  </Button>
-                </div>
-                </>
-                }
+                {
+                  item === '' ? <div key={index}>budee.io</div> : <div key={index} className='flex items-center gap-2'>
+                  <ArrowRightToLineIcon />
+                  <div key={index} className=''>
+                    <Button variant="outline" className='flex items-center'>
+                      {item === 'app' ? <Link href={'/app'}>{item}</Link>:<Link href={'/app/'+item}>{item}</Link>}
+                    </Button>
+                  </div>
+                  </div>
+                  }
               </>
               ))
             }
@@ -144,3 +152,4 @@ export default function Navbar() {
     </section>
   )
 }
+

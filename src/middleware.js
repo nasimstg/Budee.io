@@ -1,12 +1,14 @@
-import { authMiddleware, redirectToSignIn } from "@clerk/nextjs";
+import { authMiddleware, currentUser, redirectToSignIn } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
+import { initUser } from "./lib/db/user";
 export default authMiddleware({
-  publicRoutes: ["/", "/contact", "/pricing", "/about", "/login", "/signup"],
+  publicRoutes: ["/", "/contact", "/pricing", "/about", "/sign-in", "/sign-up", "/documentation"],
   afterAuth(auth, req, evt) {
     // Handle users who aren't authenticated
     if (!auth.userId && !auth.isPublicRoute) {
       return redirectToSignIn({ returnBackUrl: req.url });
     }
+    // Handle users who are authenticated but haven't selected an organization
     if (
       auth.userId &&
       !auth.orgId &&
