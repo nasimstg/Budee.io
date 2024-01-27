@@ -38,3 +38,8 @@ next-env.d.ts
 
 .env
 /.xata/
+.eslintrc.json
+.xatarc
+packeage-lock.json
+.dockerignore
+
