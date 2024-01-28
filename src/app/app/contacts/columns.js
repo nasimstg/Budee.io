@@ -1,5 +1,5 @@
 'use client'
-import { MoreHorizontal } from "lucide-react"
+import { ArrowUpDown, MoreHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -18,6 +18,16 @@ import {
     DialogTrigger,
     DialogFooter,
   } from "@/components/ui/dialog"
+
+  import {
+    Sheet,
+    SheetContent,
+    SheetDescription,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+  } from "@/components/ui/sheet"
+  
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
@@ -25,16 +35,36 @@ import { Label } from "@/components/ui/label"
 export const columns = [
     {
       accessorKey: "name",
-      header: "Name",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Name
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        )
+      },
     },
     {
       accessorKey: "email",
-      header: "Email",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Email
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        )
+      },
     },
     {
         id: "actions",
         cell: ({ row }) => {     
-            console.log(row);
+            console.log(row.original);
           return (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -46,49 +76,41 @@ export const columns = [
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuItem>
-                <Dialog>
-                    <DialogTrigger asChild>
-                        <p>
-                            Edit
-                        </p>
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-[425px]">
-                        <DialogHeader>
-                        <DialogTitle>Edit Contacts</DialogTitle>
-                        <DialogDescription>
-                            Make changes to your Contacts here. Click save when youre done.
-                        </DialogDescription>
-                        </DialogHeader>
-                        
-                        <DialogFooter>
-                        <Button type="submit">Save changes</Button>
-                        </DialogFooter>
-                    </DialogContent>
+                    <Dialog>
+                        <DialogTrigger asChild>
+                            <p>
+                                Edit
+                            </p>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-[425px]">
+                            <DialogHeader>
+                            <DialogTitle>Edit Contacts</DialogTitle>
+                            <DialogDescription>
+                                Make changes to your Contacts here. Click save when youre done.
+                            </DialogDescription>
+                            </DialogHeader>
+                            
+                            <DialogFooter>
+                            <Button type="submit">Save changes</Button>
+                            </DialogFooter>
+                        </DialogContent>
                     </Dialog>
                 </DropdownMenuItem>
-
                 <DropdownMenuItem>
-                <Dialog>
-                    <DialogTrigger asChild>
-                        <p>
-                            Delete
-                        </p>
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-[425px]">
-                        <DialogHeader>
-                        <DialogTitle>Edit Contacts</DialogTitle>
-                        <DialogDescription>
-                            Make changes to your Contacts here. Click save when youre done.
-                        </DialogDescription>
-                        </DialogHeader>
-                        
-                        <DialogFooter>
-                        <Button type="submit">Save changes</Button>
-                        </DialogFooter>
-                    </DialogContent>
-                    </Dialog>
+                <Sheet>
+                    <SheetTrigger>Delete</SheetTrigger>
+                    <SheetContent>
+                        <SheetHeader>
+                        <SheetTitle>Are you absolutely sure?</SheetTitle>
+                        <SheetDescription>
+                            This action cannot be undone. This will permanently delete your account
+                            and remove your data from our servers.
+                        </SheetDescription>
+                        </SheetHeader>
+                    </SheetContent>
+                    </Sheet>
                 </DropdownMenuItem>
-              </DropdownMenuContent>
+                </DropdownMenuContent>
             </DropdownMenu>
           )
         },
