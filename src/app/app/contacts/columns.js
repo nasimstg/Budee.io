@@ -1,14 +1,10 @@
 'use client'
-import { ArrowUpDown, MoreHorizontal } from "lucide-react"
+import { ArrowUpDown, MoreHorizontal, Edit3Icon, DeleteIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { toast } from "@/components/ui/toast"
+import { useUser } from "@clerk/nextjs"
+
+
 import {
     Dialog,
     DialogContent,
@@ -19,17 +15,11 @@ import {
     DialogFooter,
   } from "@/components/ui/dialog"
 
-  import {
-    Sheet,
-    SheetContent,
-    SheetDescription,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-  } from "@/components/ui/sheet"
   
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Separator } from "@/components/ui/separator"
+import Link from "next/link"
 
 
 export const columns = [
@@ -63,80 +53,40 @@ export const columns = [
     },
     {
         id: "actions",
-        cell: ({ row }) => {     
+        cell: ({ row }) => {
             console.log(row.original);
           return (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
+            <>
                 <Button variant="ghost" className="h-8 w-8 p-0">
-                  <span className="sr-only">Open menu</span>
-                  <MoreHorizontal className="h-4 w-4" />
+                    <Link href={`/app/contacts/edit/${row.original.id}`}>
+                    <span className="sr-only">Edit Contact</span>
+                    <Edit3Icon className="h-4 w-4" />
+                    </Link>
                 </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                <DropdownMenuItem>
-                    <Dialog>
-                        <DialogTrigger asChild>
-                            <p>
-                                Edit
-                            </p>
-                        </DialogTrigger>
-                        <DialogContent className="sm:max-w-[425px]">
-                            <DialogHeader>
-                            <DialogTitle>Edit Contacts</DialogTitle>
-                            <DialogDescription>
-                                Make changes to your Contacts here. Click save when youre done.
-                            </DialogDescription>
-                            </DialogHeader>
-                            
-                            <DialogFooter>
-                            <Button type="submit">Save changes</Button>
-                            </DialogFooter>
-                        </DialogContent>
-                    </Dialog>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                <Sheet>
-                    <SheetTrigger>Delete</SheetTrigger>
-                    <SheetContent>
-                        <SheetHeader>
-                        <SheetTitle>Are you absolutely sure?</SheetTitle>
-                        <SheetDescription>
-                            This action cannot be undone. This will permanently delete your account
-                            and remove your data from our servers.
-                        </SheetDescription>
-                        </SheetHeader>
-                    </SheetContent>
-                    </Sheet>
-                </DropdownMenuItem>
-                </DropdownMenuContent>
-            </DropdownMenu>
+                <Dialog>
+                <DialogTrigger asChild>
+                    <Button variant="ghost" className="h-8 w-8 p-0">
+                    <span className="sr-only">Delete Contact</span>
+                    <DeleteIcon className="h-4 w-4" />
+                    </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                    <DialogTitle>Are you sure you ?</DialogTitle>
+                    <DialogDescription>
+                    Deleting this contact will remove it from your list of contacts. This action cannot be undone.
+                        <Separator className="my-2" />
+                        <p className="">Name: {row.original.name} <br />
+                        Email: {row.original.email} </p>
+                    </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                    <Button variant="destructive" type="submit">Delete</Button>
+                    </DialogFooter>
+                </DialogContent>
+                </Dialog>
+            </>
           )
         },
       },
 ]
-
-export function dioalogBox({data}){
-    return (
-        <Dialog>
-            <DialogTrigger asChild>
-                <p>
-                    {data.name}
-                </p>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                <DialogTitle>{data.title}</DialogTitle>
-                <DialogDescription>
-                    {data.description}
-                </DialogDescription>
-                </DialogHeader>
-                    {data.comp}
-                <DialogFooter>
-                <Button type="submit">Save changes</Button>
-                </DialogFooter>
-            </DialogContent>
-            </Dialog>
-    )
-}

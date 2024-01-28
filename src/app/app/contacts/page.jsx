@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect } from 'react'
+import React, { useEffect, useId } from 'react'
 import {data} from "@/data/sidebarData"
 import Sidebar from '@/components/sidebar'
 import TopMenu from '@/components/topmenu'
@@ -25,7 +25,7 @@ import { getContacts } from '@/lib/db/contacts'
 import { useUser } from '@clerk/nextjs'
 
  
-const formSchema = z.object({
+export const formSchema = z.object({
   name: z.string().min(2, {
     message: "Name must be at least 2 characters.",
   }),
@@ -124,7 +124,6 @@ export function AddContacts(){
           </>
           )}
         />
-
         <Button type="submit">Add</Button>
         </form>
     </Form>
@@ -142,14 +141,15 @@ const menu_data = [
 
 export default function Contacts() {
   const [myContacts, setMyContacts] = useState(null);
+
   const [loading, setLoading] = useState(false);
   const {user} = useUser()
   useEffect( () => {
     setLoading(true);
     async function fetchData(email) {
       const res = await getContacts(email);
-      console.log(res);
       setMyContacts(res);
+      console.log(res);
     }
     if(user){
       fetchData(user.emailAddresses[0].emailAddress);
