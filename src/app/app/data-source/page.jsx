@@ -9,29 +9,39 @@ import Image from "next/image"
 import { DataTable } from "@/components/table"
 import {data} from "@/data/sidebarData"
 import { useRouter } from 'next/router'
+import { columns } from "./columns"
+import { useUser } from "@clerk/nextjs"
+import { useEffect, useState } from "react"
+import { getAccounts } from "@/lib/db/datasource"
 
 const accountType = [
   {
+    name:'Google Ads',
     img:'/images/adwords.png',
     action:'/app/new/google',
   },
   {
+    name: 'Meta Ads',	
     img:'/images/meta.png',
     action:'/app/new/meta'
   },
   {
+    name: 'Bing Ads',
     img:'/images/bing.png',
     action:'/app/new/bing',
   },
   {
+    name: 'Twitter Ads',
     img:'/images/twitter.png',
     action:'/app/new/twitter',
   },
   {
+    name: 'Linkedin Ads',
     img:'/images/linkedin.png',
     action:'/app/new/linkedin',
   },
   {
+    name: 'Tiktok Ads',
     img:'/images/tik-tok.png',
     action:'/app/new/tiktok',
   },
@@ -66,6 +76,20 @@ export const menu_data = [
 ] 
 
 export default function DataSource() {
+  const [loading, setLoading] = useState(true)
+  const [accounts, setAccounts] = useState([])
+  const {user} = useUser()
+
+  useEffect(() => {
+    async function fetchData() {
+      const res = await getAccounts(user.emailAddresses[0].emailAddress)
+      setAccounts(res)
+    }
+    if(user){
+      fetchData()
+    }
+    setLoading(false)
+  }, [user])
   return (
     <section className='mx-10 my-4'>
     <div className='flex my-4'>
@@ -74,7 +98,9 @@ export default function DataSource() {
       </div>
       <div className=' flex-[3]'>
         <TopMenu  data={menu_data}/>
-        <DataTable />
+        {
+          loading ? <div>Loading...</div> : <DataTable  columns={columns} data={accounts != null && accounts}/>
+        }
       </div>
     </div>
   </section>

@@ -20,12 +20,10 @@ export async function initUser(user) {
 
 // Get userid from xata database using email
 export async function getUserId(email) {
-    console.log(email);
     const user = await xata.db.users.filter({ 'user-mail': email }).getFirst();
     if(!user) {
         console.log("\nNo user found!\n");
         return -1;
     }
-    console.log(user);
     return user.id;
 }

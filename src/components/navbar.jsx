@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import { UserButton, useUser } from '@clerk/nextjs'
 import { ModeToggle } from './moodToggle'
 import Link from 'next/link'
@@ -101,9 +101,10 @@ export default function Navbar() {
             </div>
             {
               path.map((item, index) => (
-              <>
+              <Fragment key={index}>
                 {
-                  item === '' ? <div key={index}>budee.io</div> : <div key={index} className='flex items-center gap-2'>
+                  item === '' ? <div key={index}>budee.io</div> : 
+                  <div key={index} className='flex items-center gap-2'>
                   <ArrowRightToLineIcon />
                   <div key={index} className=''>
                     <Button variant="outline" className='flex items-center'>
@@ -112,7 +113,7 @@ export default function Navbar() {
                   </div>
                   </div>
                   }
-              </>
+              </Fragment>
               ))
             }
           </div>

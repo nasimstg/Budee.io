@@ -7,8 +7,6 @@ import { usePathname } from "next/navigation"
 
 export default function Sidebar({data}) {
   const [path, setPath] = useState(usePathname())
-  console.log(path)
-  
   return (
     <ul className="flex flex-col bg-zinc-100 dark:bg-zinc-900 mr-4 rounded gap-2 p-2">
       {

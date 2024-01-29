@@ -72,7 +72,7 @@ export default function Home() {
         </div>
         <div className=' flex-[3]'>
           <TopMenu data={menu_data} />
-          <Body />
+          <Body data={{...menu_data[0], title: 'here'}} />
         </div>
       </div>
     </section>

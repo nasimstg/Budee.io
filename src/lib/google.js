@@ -1,38 +1,28 @@
-import { GoogleAdsApi, types } from 'google-ads-api'
-import { useRouter } from 'next/router'
+import { GoogleAdsApi } from 'google-ads-api'
 import axios from 'axios'
 
-export async function RedirectToGoogleOAuth() {
-    const router = useRouter()
-
-    const params = new URLSearchParams({
-        client_id: process.env.GOOGLE_ADS_CLIENT_ID,
-        redirect_uri: process.env.REDIRECT_URI, // Use environment variable
-        response_type: 'code',
-        scope: 'https://www.googleapis.com/auth/adwords',
-        access_type: 'offline',
-    })
-
-    try {
-        await router.push(`https://accounts.google.com/o/oauth2/v2/auth?${params}`)
-    } catch (err) {
-        console.error(err)
-    }
-}
-
 export async function exchangeCodeForTokens(code) {
+    console.log('code:', code)
+    console.log('redirect_uri:', process.env.NEXT_PUBLIC_REDIRECT_URI)
+    console.log('client_id:', process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT_ID)
+    console.log('client_secret:', process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT_SECRET)
     try {
-        const { data } = await axios.post('https://oauth2.googleapis.com/token', {
+        const { data } = await axios.post('https://www.googleapis.com/oauth2/v4/token', {
             code,
-            client_id: process.env.GOOGLE_ADS_CLIENT_ID,
-            client_secret: process.env.GOOGLE_ADS_CLIENT_SECRET,
-            redirect_uri: process.env.REDIRECT_URI, // Use environment variable
+            client_id: process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT_ID,
+            client_secret: process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT_SECRET,
+            redirect_uri: process.env.NEXT_PUBLIC_REDIRECT_URI,
             grant_type: 'authorization_code',
-        })
+        });
 
-        return { accessToken: data.access_token, refreshToken: data.refresh_token }
+        // Use the access token to get the user's email address
+        const { data: userInfo } = await axios.get('https://www.googleapis.com/oauth2/v2/userinfo', {
+            headers: { Authorization: `Bearer ${data.access_token}` },
+        });
+
+        return { accessToken: data.access_token, refreshToken: data.refresh_token, email: userInfo.email };
     } catch (err) {
-        console.error(err)
+        console.error(err);
     }
 }
 
