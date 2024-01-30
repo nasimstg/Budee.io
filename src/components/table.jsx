@@ -29,10 +29,11 @@ import { Button } from "./ui/button"
 import { Input } from "./ui/input"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 
-export function DataTable({ columns, data }) {
+export function DataTable({ columns, data, ...props }) {
   const [sorting, setSorting] = React.useState([])
   const [columnFilters, setColumnFilters] = React.useState([])
   const [columnVisibility, setColumnVisibility] = React.useState({})
+  const [rowSelection, setRowSelection] = React.useState({})
   
   const table = useReactTable({
     data,
@@ -45,10 +46,12 @@ export function DataTable({ columns, data }) {
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
     state: {
       sorting,
       columnFilters,
       columnVisibility,
+      rowSelection,
     },
   })
   return (
